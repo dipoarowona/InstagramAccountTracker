@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="padding">
+    <div class="row">
+        <div class="landing-text col-md-6" style="padding-left: 5%;">
+            <h1>Fast and Easy Way of Keeping Up to Date With Account Analytics</h1><br>
+            <h3>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laborum, vel consectetur commodi, possimus ipsum assumenda nisi tempora tenetur, omnis voluptas exercitationem ratione quos iste inventore incidunt dicta architecto ullam pariatur dolore repellat accusamus consequatur! Voluptas voluptatum voluptatem nobis minus consequatur dolorem, amet illum atque velit itaque porro aut, mollitia quisquam.</h3>
+            <div class="text-center" style="padding-top: 15px;">
+                <a type="button" href="{{ url_for('register') }}"class="btn btn-warning">Start Tracking Your Account Today!</a>
+            </div>
+        </div>
+        <div class="col-md-6" style="margin-top: 25px; ">
+            <img src="{{ url_for('static', filename='landingpage.png') }}" alt="" style="padding-left:30px;width:580px;height:auto;">
+        </div>
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}

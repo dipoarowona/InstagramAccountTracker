@@ -1,0 +1,206 @@
+body{
+    background:#1476cc;
+    margin-top: 5rem;
+}
+
+.navbar-brand{
+    font-family: 'Helvetica Neue', sans-serif; 
+    font-size: 180%; 
+    font-weight: bold; 
+    letter-spacing: -1px;
+    color: white;
+}
+.navbar-brand:hover{
+    color: black;
+}
+.site-header .navbar-nav .nav-link {
+    color: #c9c4c4fa;
+}
+  
+.site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+}
+.navbar-trans {
+    background: transparent;
+}
+.navbar-toggler .line{
+    width: 100%;
+    float: left;
+    height: 2px;
+    background-color: #fff;
+    margin-bottom: 5px;
+}
+.navbar-toggler{
+    width: 47px;
+    height: 34px;
+    background-color: #1476cc;
+    border:none;
+}
+
+.landing-text{
+    padding-top: 100px;
+    padding-left: 20px;
+    vertical-align: middle;
+}
+.landing-text h1{
+    font-size: 200%;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+}
+
+.landing-text h3{
+    font-size: 160%;
+    font-weight: lighter;
+    font-family:  sans-serif;
+    color: white;
+}
+
+.btn-white {
+    border-color: #fff;
+    background-color: #fff;
+    color: #46484a; 
+}
+  
+.btn-white:hover, .btn-white:focus, .btn-white:active {
+    border-color: #dfe1e5;
+    background-color: #dfe1e5;
+    color: #46484a; 
+}
+  
+.btn-outline-white, .btn-outline-white:visited {
+    background: none;
+    color: #fff;
+    border-color: #fff; 
+}
+  
+.btn-outline-white:hover, .btn-outline-white:focus, .btn-outline-white:active {
+    color: #46484a;
+    background: #fff; 
+}
+.container .col-md-6 .border-bottom{
+    color:#f0ad4e;
+}
+.container .col-md-6 .form-control-label{
+    color: white;
+    font-size:large;
+    font-weight:bold;
+}
+.container .col-md-6 .form-check-label{
+    color: #f0ad4e;
+    font-size: medium;
+}
+
+#login-forgot-pw{
+    color: #f0ad4e;
+}
+
+#need-account{
+    color: #f0ad4e;
+}
+.form-check{
+    margin-top: -10px;
+}
+
+.card{
+    margin-bottom: 25px; 
+    box-shadow: 0 5px 15px rgba(57, 98, 254, 0.02), 0 3px 6px rgba(117, 108, 254, 0.12);
+    border: none;
+    background-color:#1461cc;
+    box-shadow: 0 0 30px #333;
+ }
+.gradient-deepblue{
+    background: #6a11cb;
+    background: -webkit-linear-gradient(45deg, #6a11cb, #2575fc)!important;
+    background: linear-gradient(45deg, #6a11cb , #2575fc)!important;
+}
+.gradient-orange{
+    background: #fc4a1a;
+    background: -webkit-linear-gradient(45deg, #fc4a1a, #f7b733)!important;
+    background: linear-gradient(45deg, #fc4a1a, #f7b733)!important;
+}
+.gradient-influenza{
+    background: #c04848;
+    background: -webkit-linear-gradient(45deg, #c04848, #480048)!important;
+    background: linear-gradient(45deg, #c04848, #480048)!important;
+}
+.gradient-ohhappiness {
+    background: #00b09b;
+    background: -webkit-linear-gradient(45deg, #00b09b, #96c93d)!important;
+    background: linear-gradient(45deg, #00b09b, #96c93d)!important;
+}
+.gradient-royal{
+    background: #141e30;
+    background: -webkit-linear-gradient(45deg, #141e30, #2c527d)!important;
+    background: linear-gradient(45deg, #141e30, #2c527d)!important;
+}
+.gradient-meridian{
+    background: #283c86;
+    background: -webkit-linear-gradient(45deg, #283c86, #45a247)!important;
+    background: linear-gradient(45deg, #283c86, #45a247)!important;
+}
+.gradient-titanium{
+	  background: #283048;
+    background: -webkit-linear-gradient(45deg, #283048, #859398)!important;
+    background: linear-gradient(45deg, #283048, #859398)!important;
+}
+
+ 
+
+.w_chart {
+    position: relative;
+    display: inline-block;
+    width: 65px !important;
+    height: 65px !important;
+    text-align: center;
+  }
+  
+  .w_chart canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 65px !important;
+    height: 65px !important;
+  }
+  .w_percent {
+    display: inline-block;
+    line-height: 65px !important;
+    z-index: 2;
+    color: #353434;
+  }
+  .w_percent:after {
+    content: '%';
+    margin-left: 0.1em;
+    font-size: .8em;
+    color: #353434;
+  }
+ 
+ 
+
+
+
+#accountai{
+    margin:auto;
+    width:95%;
+    padding-bottom: 0.5%;
+    background:#1461cc;
+    box-shadow: 0 0 30px #333;
+}
+
+
+.chart-container-1{
+    position:relative;
+    background: #1461cc;
+}
+
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background: transparent;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-weight: 600;
+	 font-size: 14px;
+	 color: #353434;
+}
+
+ 

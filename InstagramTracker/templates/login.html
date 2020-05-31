@@ -1,0 +1,72 @@
+{% extends "index.html"%}
+{% block content %}
+
+<div class="container" style="padding-top:9rem;">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="POST" action="">
+                {{ form.hidden_tag() }} <!--adds in a csrf token(cross site request forgery)-->
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Member Login</legend>
+                    <div class="form-group">
+                        {{form.email.label(class="form-control-label")}}
+                        
+                        {% if form.email.errors %}<!--this acts as an error check-->
+                            {{form.email(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.email.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.email(class="form-control form-control-lg")}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{form.password.label(class="form-control-label")}}
+                        
+                        {% if form.password.errors %}<!--this acts as an error check-->
+                            {{form.password(class="form-control form-control-lg is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{form.password(class="form-control form-control-lg")}}
+                        {% endif %}
+                    </div>
+                    <div class="row justify-content-md-center align-items-center">
+                        <div class="col-md-4">
+                            <div class="form-check">
+                                {{ form.remember(class="form-check-input") }}
+                                {{ form.remember.label(class="form-check-label") }}
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                {{form.submit(class="btn btn-outline-white btn-outline")}}
+
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="col-md-12 text-center" style="margin-top: -22px;">
+                        <small class="text-muted ml-2" >
+                            <a id="login-forgot-pw" href="#">Forgot Password</a>
+                        </small>
+                    </div>
+                </div>
+            </form>
+            <div class="border-top pt-3">
+                <small class="" id="need-account">
+                    Need An Account? <a class ="ml-2" style="color: white;" href="{{ url_for('register')}}">Sign Up Now</a> <!--this is an anchor tag that re directs you to the login page-->
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
