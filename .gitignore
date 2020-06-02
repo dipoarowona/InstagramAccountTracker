@@ -1,5 +1,6 @@
 #added
 .DS_Store
+config.py #privacy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
