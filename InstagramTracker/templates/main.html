@@ -3,11 +3,11 @@
 
 <div class="container">
     <div class="row text-center">
-        <div class="col-md-6" style="margin:auto; color: #f0ad4e;">
+        <div class="col-md-7" style="margin:auto; color: #f0ad4e;">
             <div class="card">
                 <div class="card-body">
-                    <h1>Welcome Latifa!</h1><br>
-                    <h5 style="margin-top: -30px;">@latifaarowo</h5>
+                    <h1>Welcome {{ current_user.name }}!</h1><br>
+                    <h5 style="margin-top: -30px;">@{{ current_user.igAccount }}</h5>
                 </div>
             </div>
         </div>
@@ -16,32 +16,32 @@
         <div class="col-xl-3 col-12 col-lg-6">
             <div class="card gradient-deepblue">
                 <div class="card-body">
-                    <h5 class="text-white mb-0">1234<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Following<span class="float-right">+4.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <h5 class="text-white mb-0">{{following}}<span class="float-right"></h5>
+                    <p class="mb-0 text-white small-font">Total Following<span class="float-right">+{{changeFollowing}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-12 col-lg-6">
             <div class="card gradient-orange">
                 <div class="card-body">
-                    <h5 class="text-white mb-0">1234<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Followers<span class="float-right">+4.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <h5 class="text-white mb-0">{{followers}}<span class="float-right"></h5>
+                    <p class="mb-0 text-white small-font">Total Followers<span class="float-right">+{{changeFollowers}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-12 col-lg-6">
             <div class="card gradient-influenza">
                 <div class="card-body">
-                    <h5 class="text-white mb-0">1234<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Likes<span class="float-right">+4.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <h5 class="text-white mb-0">{{likes}}<span class="float-right"></h5>
+                    <p class="mb-0 text-white small-font">Total Likes<span class="float-right">+{{changeLikes}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
         <div class="col-xl-3 col-12 col-lg-6">
             <div class="card gradient-ohhappiness">
                 <div class="card-body">
-                    <h5 class="text-white mb-0">1234<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Posts<span class="float-right">+4.2% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <h5 class="text-white mb-0">{{posts}}<span class="float-right"></h5>
+                    <p class="mb-0 text-white small-font">Total Posts<span class="float-right">+{{changePosts}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>

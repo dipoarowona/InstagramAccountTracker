@@ -4,6 +4,7 @@ from InstagramTracker.forms import LoginForm, RegisterForm
 from flask_login import login_user, current_user,login_required, logout_user, LoginManager
 from datetime import datetime
 from flask_login import UserMixin
+from datetime import datetime
 
 
 
@@ -36,7 +37,7 @@ def login():
     if form.validate_on_submit():
         check_user = User.objects(email=form.email.data).first()
         if check_user and bcrypt.check_password_hash(check_user.password,form.password.data):
-            login_user(check_user)
+            login_user(check_user,remember=form.remember.data)
             return redirect(url_for("main"))
         else:
             flash("Invalid Email or Password.","danger")
@@ -60,7 +61,19 @@ def register():
 @app.route("/accountsummary")
 @login_required
 def main():
-    return render_template("main.html")
+    following = 0 if not current_user.following else current_user.following[-1][datetime.now().strftime("%m/%d/%Y")]
+    followers = 0 if not  current_user.followers else current_user.followers[-1][datetime.now().strftime("%m/%d/%Y")]
+    likes = 0 if not current_user.likes else current_user.likes[-1][datetime.now().strftime("%m/%d/%Y")]
+    posts = 0 if not current_user.numOfPic else current_user.numOfPic[-1][datetime.now().strftime("%m/%d/%Y")]
+# yestereday date time needed
+    changeFollowing = 0.0 if following is None or not following or current_user.following[-2][datetime.now().strftime("%m/%d/%Y")] is None else (following-current_user.following[-2][datetime.now().strftime("%m/%d/%Y")])/following
+    changeFollowers = 0.0 if followers is None or not followers or  current_user.followers[-2][datetime.now().strftime("%m/%d/%Y")] is None else (followers-current_user.followers[-2][datetime.now().strftime("%m/%d/%Y")])/followers
+    changeLikes = 0.0 if likes is None or not likes or current_user.likes[-2][datetime.now().strftime("%m/%d/%Y")] is None else (likes-current_user.likes[-2][datetime.now().strftime("%m/%d/%Y")])/likes
+    changePosts = 0.0 if posts is None or not posts or current_user.numOfPic[-2][datetime.now().strftime("%m/%d/%Y")] is None else (posts-current_user.numOfPic[-2][datetime.now().strftime("%m/%d/%Y")])/posts
+    print(changePosts,changeFollowers, changeFollowing, changeLikes)
+    return render_template("main.html", following=following, followers=followers,
+                            likes=likes, posts=posts, changeFollowing=changeFollowing,
+                            changeFollowers=changeFollowers, changeLikes=changeLikes, changePosts=changePosts)
 
 @app.route('/logout', methods = ['GET'])
 @login_required
