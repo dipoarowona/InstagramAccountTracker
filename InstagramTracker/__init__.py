@@ -1,12 +1,24 @@
 from flask import Flask
+from InstagramTracker import config
+from flask_pymongo import PyMongo
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
+from flask_mongoengine import MongoEngine
 
-
-#import config page later
 
 
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = 'e3da129cac7f4aff0535190937f75aed36dcdeb9ac4777c6ac9a5d89b9574bfe'
-
+app.config["SECRET_KEY"] = config.secret_key
+app.config['MONGODB_SETTINGS'] = {
+    'db': config.mongo_db,
+    'host': config.mongo_uri
+}
+db = MongoEngine(app)
+login_manager = LoginManager(app)
+login_manager.login_view = "users.login"
+login_manager.login_message_category = "info"
+# mongo = PyMongo(app)
+bcrypt = Bcrypt(app)
 
 from InstagramTracker import routes

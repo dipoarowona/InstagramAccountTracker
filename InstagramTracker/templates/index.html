@@ -32,12 +32,21 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" id="nav-link" href="{{ url_for('login') }}">Login</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-outline-white btn-outline" href="{{ url_for('register') }}"><i class="fa fa-user"></i> Sign Up</a>
-                        </li>
+                        {% if current_user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" id="nav-link" href="{{ url_for('login') }}">Account</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" id="nav-link" href="{{ url_for('login') }}">Login</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-white btn-outline" href="{{ url_for('register') }}"><i class="fa fa-user"></i>Sign Up</a>
+                            </li>
+                        {% endif %}
                     </ul>
                 </div> 
             </div>

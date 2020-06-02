@@ -46,7 +46,7 @@ class instaAccount:
             end = ',"page_info":{"has_next_page":'
             post = self.r[self.r.find(start)+len(start):[postEnd.start() for postEnd in re.finditer(end, self.r)][1]]
 
-            return(followers, following, post)
+            return[followers, following, post]
 
     def likes(self):
         if self.isAccount() and self.isPublic():
@@ -90,14 +90,4 @@ class instaAccount:
             e = datetime.now()
 
             return(likes)
-
-
-while True:
-    time.sleep(1800)
-    user = instaAccount("latifaarowona")
-    if user.isPublic and user.isAccount:
-        print(datetime.now())
-        print(user.followingFollowersPosts())
-        print(user.likes(),"\n\n\n\n")
-    else:
-        print("account does not exist or is private")
+    
