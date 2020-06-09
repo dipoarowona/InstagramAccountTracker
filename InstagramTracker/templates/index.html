@@ -33,8 +33,11 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ml-auto">
                         {% if current_user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" id="nav-link" href="#">Account</a>
+                        <li class="nav-item">
+                            <a class="nav-link" id="nav-link" href="{{ url_for('main') }}">Dashboard</a>
+                        </li>    
+                        <li class="nav-item">
+                                <a class="nav-link" id="nav-link" href="{{ url_for('settings') }}">Account</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="nav-link" href="{{ url_for('logout') }}">Logout</a>

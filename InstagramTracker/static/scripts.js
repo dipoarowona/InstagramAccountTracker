@@ -7,14 +7,6 @@ let xChart = new Chart(myChart, {
         datasets: [{
             label: '# of Votes',
             data: [12, 19, 3, 5, 2, 3],
-            backgroundColor: [
-                'red',
-                'blue',
-                'yellow',
-                'green',
-                'purple',
-                'orange'
-            ],
             borderColor: [
                 'rgba(255, 99, 132, 1)',
                 'rgba(54, 162, 235, 1)',

@@ -17,7 +17,7 @@
             <div class="card gradient-deepblue">
                 <div class="card-body">
                     <h5 class="text-white mb-0">{{following}}<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Following<span class="float-right">+{{changeFollowing}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <p class="mb-0 text-white small-font">Total Following<span class="float-right">{{changeFollowing}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
@@ -25,7 +25,7 @@
             <div class="card gradient-orange">
                 <div class="card-body">
                     <h5 class="text-white mb-0">{{followers}}<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Followers<span class="float-right">+{{changeFollowers}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <p class="mb-0 text-white small-font">Total Followers<span class="float-right">{{changeFollowers}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
             <div class="card gradient-influenza">
                 <div class="card-body">
                     <h5 class="text-white mb-0">{{likes}}<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Likes<span class="float-right">+{{changeLikes}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <p class="mb-0 text-white small-font">Total Likes<span class="float-right">{{changeLikes}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
@@ -41,7 +41,7 @@
             <div class="card gradient-ohhappiness">
                 <div class="card-body">
                     <h5 class="text-white mb-0">{{posts}}<span class="float-right"></h5>
-                    <p class="mb-0 text-white small-font">Total Posts<span class="float-right">+{{changePosts}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
+                    <p class="mb-0 text-white small-font">Total Posts<span class="float-right">{{changePosts}}% <i class="zmdi zmdi-long-arrow-up"></i></span></p>
                 </div>
             </div>
         </div>
@@ -76,24 +76,9 @@
 
 <div class="row text-center" id="accountai"> <!--maybe covert to card or just make the same color as cards-->
     <div class="col-12"> <h3>AI Account Metrics</h3>
-        <div class="row">
+        <div class="row justify-content-center">
             <div class="col-12 col-lg-6 col-xl-4">
                 <div class="card gradient-royal">
-                    <div class="card-body">
-                        <div class="media align-items-center">
-                            <div class="w_chart easy-dash-chart1" data-percent="60">
-                                <span class="w_percent"></span>
-                            </div>
-                            <div class="media-body ml-3">
-                                <h6 class="mb-0">Facebook Followers</h6>
-                                <small class="mb-0">22.14%</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 col-lg-6 col-xl-4">
-                <div class="card gradient-meridian">
                     <div class="card-body">
                         <div class="media align-items-center">
                             <div class="w_chart easy-dash-chart1" data-percent="60">

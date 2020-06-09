@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, url_for, request
 from InstagramTracker.forms import LoginForm, RegisterForm
 from flask_login import login_user, current_user,login_required, logout_user, LoginManager
 from datetime import datetime
+import datetime as dt
 from flask_login import UserMixin
 from datetime import datetime
 
@@ -61,22 +62,98 @@ def register():
 @app.route("/accountsummary")
 @login_required
 def main():
-    following = 0 if not current_user.following else current_user.following[-1][datetime.now().strftime("%m/%d/%Y")]
-    followers = 0 if not  current_user.followers else current_user.followers[-1][datetime.now().strftime("%m/%d/%Y")]
-    likes = 0 if not current_user.likes else current_user.likes[-1][datetime.now().strftime("%m/%d/%Y")]
-    posts = 0 if not current_user.numOfPic else current_user.numOfPic[-1][datetime.now().strftime("%m/%d/%Y")]
-# yestereday date time needed
-    changeFollowing = 0.0 if following is None or not following or current_user.following[-2][datetime.now().strftime("%m/%d/%Y")] is None else (following-current_user.following[-2][datetime.now().strftime("%m/%d/%Y")])/following
-    changeFollowers = 0.0 if followers is None or not followers or  current_user.followers[-2][datetime.now().strftime("%m/%d/%Y")] is None else (followers-current_user.followers[-2][datetime.now().strftime("%m/%d/%Y")])/followers
-    changeLikes = 0.0 if likes is None or not likes or current_user.likes[-2][datetime.now().strftime("%m/%d/%Y")] is None else (likes-current_user.likes[-2][datetime.now().strftime("%m/%d/%Y")])/likes
-    changePosts = 0.0 if posts is None or not posts or current_user.numOfPic[-2][datetime.now().strftime("%m/%d/%Y")] is None else (posts-current_user.numOfPic[-2][datetime.now().strftime("%m/%d/%Y")])/posts
-    print(changePosts,changeFollowers, changeFollowing, changeLikes)
-    return render_template("main.html", following=following, followers=followers,
-                            likes=likes, posts=posts, changeFollowing=changeFollowing,
-                            changeFollowers=changeFollowers, changeLikes=changeLikes, changePosts=changePosts)
 
-@app.route('/logout', methods = ['GET'])
+    header = headerData()
+    flwrsData = followersData(current_user.email)
+    lksData = likesData(current_user.email)
+    avgLikesData = averageLikesData(current_user.email)
+    
+    return render_template("main.html", following=header[0], followers=header[1],
+                            likes=header[2], posts=header[3], changeFollowing=header[5],
+                            changeFollowers=header[4], changeLikes=header[6], changePosts=header[7], 
+                            chart_followers=flwrsData)
+
+@app.route('/logout', methods = ['GET'])    
 @login_required
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+@app.route("/settings")
+@login_required
+def settings():
+    return render_template("account.html")
+
+
+
+def headerData():
+    following = 0 if not current_user.following else current_user.following[-1][datetime.now().strftime("%m/%d/%Y")]
+    followers = 0 if not  current_user.followers else current_user.followers[-1][datetime.now().strftime("%m/%d/%Y")]
+    likes = 0 if not current_user.likes else current_user.likes[-1][datetime.now().strftime("%m/%d/%Y")]
+    posts = 0 if not current_user.numOfPic else current_user.numOfPic[-1][datetime.now().strftime("%m/%d/%Y")]
+
+    pd = datetime.today() - dt.timedelta(days=1)
+    pd = pd.strftime("%m/%d/%Y") #pervious day
+
+    try:
+        changeFollowing = 0.0 if following is None or not following or current_user.following[-2][pd] is None else (following-current_user.following[-2][pd])/following
+        changeFollowers = 0.0 if followers is None or not followers or  current_user.followers[-2][pd] is None else (followers-current_user.followers[-2][pd])/followers
+        changeLikes = 0.0 if likes is None or not likes or current_user.likes[-2][pd] is None else (likes-current_user.likes[-2][pd])/likes
+        changePosts = 0.0 if posts is None or not posts or current_user.numOfPic[-2][pd] is None else (posts-current_user.numOfPic[-2][pd])/posts
+    except:
+        changeFollowing = 0.0 
+        changeFollowers = 0.0 
+        changeLikes = 0.0 
+        changePosts = 0.0
+    
+    changePosts = round(changePosts,4)
+    changeFollowers = round(changeFollowers,4)
+    changeFollowing = round(changeFollowing,4)
+    changeLikes = round(changeLikes,4)
+
+    return following, followers, likes, posts, changeFollowers, changeFollowing, changeLikes, changePosts
+def followersData(email):
+    data = list(current_user.followers)
+    values = []
+    dates = []
+    for i in range(len(data)): 
+        value = list(data[i].values())[0]
+        date = list(data[i].keys())[0]
+        values.append(value)
+        dates.append(date)
+    return dates,values
+def likesData(email):
+    data = list(current_user.likes)
+    values = []
+    dates = []
+    for i in range(len(data)): 
+        value = list(data[i].values())[0]
+        date = list(data[i].keys())[0]
+        values.append(value)
+        dates.append(date)
+    if values[0]==None:
+        return dates,None
+    return dates,values
+def postsData(email):
+    data = list(current_user.numOfPic)
+    values = []
+    dates = []
+    for i in range(len(data)): 
+        value = list(data[i].values())[0]
+        date = list(data[i].keys())[0]
+        values.append(value)
+        dates.append(date)
+    return dates,values   
+def averageLikesData(email):
+    try:
+        likes = likesData(email)
+        posts = postsData(email)
+        avg=[]
+        
+        for i in range(len(likes[0])):
+            if likes[0][i] == posts[0][i]:
+                temp = round(likes[1][i]/posts[1][i],3)
+                avg.append(temp)
+        return likes[0], avg
+    except:
+        pass
