@@ -1,10 +1,10 @@
 from InstagramTracker import app, login_manager, db, bcrypt
 from flask import render_template, flash, redirect, url_for, request
 from InstagramTracker.forms import LoginForm, RegisterForm
-from flask_login import login_user, current_user,login_required, logout_user, LoginManager
+from flask_login import login_user, current_user,login_required, logout_user, LoginManager, UserMixin
 from datetime import datetime
 import datetime as dt
-from flask_login import UserMixin
+import flask, json
 from datetime import datetime
 
 
@@ -64,14 +64,10 @@ def register():
 def main():
 
     header = headerData()
-    flwrsData = followersData(current_user.email)
-    lksData = likesData(current_user.email)
-    avgLikesData = averageLikesData(current_user.email)
     
     return render_template("main.html", following=header[0], followers=header[1],
                             likes=header[2], posts=header[3], changeFollowing=header[5],
-                            changeFollowers=header[4], changeLikes=header[6], changePosts=header[7], 
-                            chart_followers=flwrsData)
+                            changeFollowers=header[4], changeLikes=header[6], changePosts=header[7])
 
 @app.route('/logout', methods = ['GET'])    
 @login_required
@@ -84,6 +80,27 @@ def logout():
 def settings():
     return render_template("account.html")
 
+@app.route('/data', methods=["GET","POST"])
+@login_required
+def data():
+    flwrsData = followersData(current_user.email)
+    lksData = likesData(current_user.email)
+    avgLikesData = averageLikesData(current_user.email)
+    sol = flask.jsonify([{'Followers':json.dumps({'followerData':flwrsData[1], 'followersLabels':flwrsData[0]})},
+                            {'Likes':json.dumps({'likesData':lksData[1], 'likesLabels':lksData[0]})},
+                            {'Average Likes':json.dumps({'avgLikesData':avgLikesData[1], 'avgLikeslabels':avgLikesData[0]})} 
+                            ])
+    response = app.response_class( 
+        response=json.dumps([{'followerData':flwrsData[1], 'followersLabels':flwrsData[0]},
+                            {'likesData':lksData[1], 'likesLabels':lksData[0]},
+                            {'avgLikesData':avgLikesData[1], 'avgLikesLabels':avgLikesData[0]}
+                            ]),
+        status=250,
+        mimetype='application/json'
+    )
+    resp = flask.make_response('Hello')
+    
+    return response
 
 
 def headerData():
@@ -156,4 +173,4 @@ def averageLikesData(email):
                 avg.append(temp)
         return likes[0], avg
     except:
-        pass
+        return[None,None]
