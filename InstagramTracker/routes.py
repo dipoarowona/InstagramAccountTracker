@@ -48,6 +48,9 @@ def login():
 def register():
     form =  RegisterForm()
 
+    if current_user.is_authenticated:
+        return redirect(url_for('main'))
+
     if form.validate_on_submit() and request.method == 'POST':
         existing_users = User.objects(email=form.email.data).first()
         if existing_users is None:
@@ -64,10 +67,18 @@ def register():
 def main():
 
     header = headerData()
+    like=header[2]
+
+    er = engagement()
+    ffratio = ratio()
+    income=money(er)
+    if current_user.likes ==[]:
+        like=None
     
     return render_template("main.html", following=header[0], followers=header[1],
-                            likes=header[2], posts=header[3], changeFollowing=header[5],
-                            changeFollowers=header[4], changeLikes=header[6], changePosts=header[7])
+                            likes=like, posts=header[3], changeFollowing=header[5],
+                            changeFollowers=header[4], changeLikes=header[6], changePosts=header[7], 
+                            engagement=er, ratio=ffratio[0],ratiodesc=ffratio[1], money=income)
 
 @app.route('/logout', methods = ['GET'])    
 @login_required
@@ -75,52 +86,79 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route("/settings")
-@login_required
-def settings():
-    return render_template("account.html")
-
 @app.route('/data', methods=["GET","POST"])
 @login_required
 def data():
     flwrsData = followersData(current_user.email)
     lksData = likesData(current_user.email)
     avgLikesData = averageLikesData(current_user.email)
-    sol = flask.jsonify([{'Followers':json.dumps({'followerData':flwrsData[1], 'followersLabels':flwrsData[0]})},
-                            {'Likes':json.dumps({'likesData':lksData[1], 'likesLabels':lksData[0]})},
-                            {'Average Likes':json.dumps({'avgLikesData':avgLikesData[1], 'avgLikeslabels':avgLikesData[0]})} 
-                            ])
-    response = app.response_class( 
-        response=json.dumps([{'followerData':flwrsData[1], 'followersLabels':flwrsData[0]},
-                            {'likesData':lksData[1], 'likesLabels':lksData[0]},
-                            {'avgLikesData':avgLikesData[1], 'avgLikesLabels':avgLikesData[0]}
-                            ]),
-        status=250,
-        mimetype='application/json'
-    )
-    resp = flask.make_response('Hello')
+
+    try:
+        response = app.response_class( 
+            response=json.dumps([{'followerData':flwrsData[1], 'followersLabels':flwrsData[0]},
+                                {'likesData':lksData[1], 'likesLabels':lksData[0]},
+                                {'avgLikesData':avgLikesData[1], 'avgLikesLabels':avgLikesData[0]}
+                                ]),
+            status=250,
+            mimetype='application/json'
+        )
+    except:
+        response = app.response_class( 
+            response=json.dumps([{'followerData':None, 'followersLabels':None},
+                                {'likesData':None, 'likesLabels':None},
+                                {'avgLikesData':None, 'avgLikesLabels':None}
+                                ]),
+            status=250,
+            mimetype='application/json'
+        )
+
+
     
     return response
 
 
 def headerData():
-    following = 0 if not current_user.following else current_user.following[-1][datetime.now().strftime("%m/%d/%Y")]
-    followers = 0 if not  current_user.followers else current_user.followers[-1][datetime.now().strftime("%m/%d/%Y")]
-    likes = 0 if not current_user.likes else current_user.likes[-1][datetime.now().strftime("%m/%d/%Y")]
-    posts = 0 if not current_user.numOfPic else current_user.numOfPic[-1][datetime.now().strftime("%m/%d/%Y")]
-
-    pd = datetime.today() - dt.timedelta(days=1)
-    pd = pd.strftime("%m/%d/%Y") #pervious day
-
     try:
-        changeFollowing = 0.0 if following is None or not following or current_user.following[-2][pd] is None else (following-current_user.following[-2][pd])/following
-        changeFollowers = 0.0 if followers is None or not followers or  current_user.followers[-2][pd] is None else (followers-current_user.followers[-2][pd])/followers
-        changeLikes = 0.0 if likes is None or not likes or current_user.likes[-2][pd] is None else (likes-current_user.likes[-2][pd])/likes
-        changePosts = 0.0 if posts is None or not posts or current_user.numOfPic[-2][pd] is None else (posts-current_user.numOfPic[-2][pd])/posts
+        followers = followersData(current_user.email)[1][-1]
+    except:
+        followers = 0
+   
+    try:
+        data = list(current_user.following)
+        lst = []
+        for i in data:
+            lst.append(list(i.values())[0])
+        following = lst[-1]
+    except:
+        following = 0
+    
+    try:
+        likes = likesData(current_user.email)[1][-1]
+    except:
+        likes = None
+    
+    try:
+        posts = postsData(current_user.email)[1][-1]
+    except:
+        posts = 0
+    
+    try:
+        changeFollowing = (following-lst[-2])/following
     except:
         changeFollowing = 0.0 
-        changeFollowers = 0.0 
+    
+    try:
+        changeFollowers = (followers-followersData(current_user.email)[1][-2])/followers
+    except:
+        changeFollowers = 0.0
+
+    try: 
+        changeLikes = (likes-likesData(current_user.email)[1][-2])/likes
+    except:
         changeLikes = 0.0 
+    try:
+        changePosts =(posts-postsData(current_user.email)[1][-2])/posts
+    except:
         changePosts = 0.0
     
     changePosts = round(changePosts,4)
@@ -140,17 +178,27 @@ def followersData(email):
         dates.append(date)
     return dates,values
 def likesData(email):
-    data = list(current_user.likes)
-    values = []
-    dates = []
-    for i in range(len(data)): 
-        value = list(data[i].values())[0]
-        date = list(data[i].keys())[0]
-        values.append(value)
-        dates.append(date)
-    if values[0]==None:
-        return dates,None
-    return dates,values
+    try:
+        data = list(current_user.likes)
+        values = []
+        dates = []
+        for i in range(len(data)): 
+            value = list(data[i].values())[0]
+            date = list(data[i].keys())[0]
+            values.append(value)
+            dates.append(date)
+        if values[0]==None:
+            return dates,None
+        return dates,values
+    except:
+        pass
+def engagement():
+    try:
+        avglikes = averageLikesData(current_user.email)[1][-1]
+        followers = list(current_user.followers)[-1][datetime.now().strftime("%m/%d/%Y")]
+        return round(avglikes/followers*100,2)
+    except:
+        return 0
 def postsData(email):
     data = list(current_user.numOfPic)
     values = []
@@ -174,3 +222,29 @@ def averageLikesData(email):
         return likes[0], avg
     except:
         return[None,None]
+def ratio():
+    try:
+        followers = followersData(current_user.email)[1][-1]
+        following = current_user.following[-1][datetime.now().strftime("%m/%d/%Y")]
+        ratio = followers/following
+        desc = ''
+        if ratio <= 0.5:
+            desc = 'Spammer'
+        elif ratio >0.5 and ratio <=1:
+            desc = 'Suspicious'
+        elif ratio >1 and ratio <=2:
+            desc = 'Normal'
+        elif ratio >2 and ratio <=10:
+            desc = 'Micro Influencer'
+        elif ratio >10:
+            desc = 'Influencer'
+        return [round(ratio,2), desc]
+    except:
+        return [0, 'Undetermined']
+
+
+def money(ratio):
+    try:
+        return round((ratio/100)*(current_user.followers[-1][datetime.now().strftime("%m/%d/%Y")])*(ratio/100), 2)
+    except:
+        return 0
